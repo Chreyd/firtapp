@@ -1,58 +1,84 @@
 import React, { useState } from "react";
-import { View, Text, Image, ScrollView, TextInput, Button, FlatList, StyleSheet, SectionList, ActivityIndicator, SafeAreaView, Alert, StatusBar, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Box } from 'react-native-flex-layout';
-import { Flex, Spacer } from 'react-native-flex-layout';
-import { Stack, HStack, VStack } from 'react-native-flex-layout';
-import { Wrap } from 'react-native-flex-layout';
-
-
+import { View, Text, Image, ScrollView, TextInput, Button, FlatList, StyleSheet, SectionList, ActivityIndicator, SafeAreaView, Alert, StatusBar, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Modal, Pressable } from 'react-native';
+import { Box ,Stack, HStack, VStack, Flex, Spacer, Wrap} from 'react-native-flex-layout';
 
 
 
 const App = () => {
+
+  const [modalVisible, setModalVisible] = useState(false)
   return (
-    <KeyboardAvoidingView
-    enabled
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.inner}>
-          <Text style={styles.header}>Header</Text>
-          <TextInput placeholder="Username" style={styles.textInput} />
-          <View style={styles.btnContainer}>
-            <Button title="Submit" onPress={() => null} />
+    <View style={styles.centeredView}>
+      <Modal
+        animationType='slide'
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={()=>{Alert.alert('modal est fermé'); setModalVisible(!modalVisible);}}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>HELLO word</Text>
+            <Pressable 
+              style={[styles.button, styles.buttonClose]}
+              onPress={()=> setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </Pressable>
           </View>
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+
+      </Modal>
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={()=> setModalVisible(true)}>
+          <Text style={styles.textStyle}>show modal</Text>
+      </Pressable>
+    </View>
   );
 };
 
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  inner: {
-    padding: 24,
+  centeredView: {
     flex: 1,
-    justifyContent: "space-around"
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
   },
-  header: {
-    fontSize: 36,
-    marginBottom: 48
-  },
-  textInput: {
-    height: 40,
-    borderColor: "#000000",
-    borderBottomWidth: 1,
-    marginBottom: 36
-  },
-  btnContainer: {
+  modalView: {
+    margin: 20,
     backgroundColor: "white",
-    marginTop: 12
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
   }
 });
 
