@@ -1,35 +1,58 @@
 import React, { useState } from "react";
-import { View, Text, Image, ScrollView, TextInput, Button, FlatList, StyleSheet, SectionList, ActivityIndicator, SafeAreaView, Alert, StatusBar, TouchableOpacity, ImageBackground   } from 'react-native';
+import { View, Text, Image, ScrollView, TextInput, Button, FlatList, StyleSheet, SectionList, ActivityIndicator, SafeAreaView, Alert, StatusBar, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Box } from 'react-native-flex-layout';
 import { Flex, Spacer } from 'react-native-flex-layout';
 import { Stack, HStack, VStack } from 'react-native-flex-layout';
 import { Wrap } from 'react-native-flex-layout';
 
-const image = { uri: "https://reactjs.org/logo-og.png" };
 
-const App = () =>(
-  <View style={styles.container}>
-    <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-      <Text style={styles.text}>Inside</Text>
-    </ImageBackground>
-  </View>
-);
+
+
+
+const App = () => {
+  return (
+    <KeyboardAvoidingView
+    enabled
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.inner}>
+          <Text style={styles.header}>Header</Text>
+          <TextInput placeholder="Username" style={styles.textInput} />
+          <View style={styles.btnContainer}>
+            <Button title="Submit" onPress={() => null} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+  );
+};
+
+
 
 const styles = StyleSheet.create({
-  container:{
-    flex: 1,
+  container: {
+    flex: 1
   },
-  image:{
+  inner: {
+    padding: 24,
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-around"
   },
-  text:{
-    color: "white",
-    fontSize: 42,
-    lineHeight: 84,
-    fontWeight: "bold",
-    textAlign: "center",
-    backgroundColor: "#000000c0",
+  header: {
+    fontSize: 36,
+    marginBottom: 48
+  },
+  textInput: {
+    height: 40,
+    borderColor: "#000000",
+    borderBottomWidth: 1,
+    marginBottom: 36
+  },
+  btnContainer: {
+    backgroundColor: "white",
+    marginTop: 12
   }
 });
 
