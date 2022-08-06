@@ -3,327 +3,63 @@ import { View, Text, Image, ScrollView, TextInput, Button, FlatList, StyleSheet,
 import { Box ,Stack, HStack, VStack, Flex, Spacer, Wrap} from 'react-native-flex-layout';
 
 
-
 const App = () => {
+  const [timesPressed, setTimesPressed] = useState(0);
 
-  const [modalVisible, setModalVisible] = useState(false)
+  let textLog = '';
+  if (timesPressed > 1) {
+    textLog = timesPressed + 'x onPress';
+  } else if (timesPressed > 0) {
+    textLog = 'onPress';
+  }
+
   return (
-    <View style={styles.centeredView}>
-      <Modal
-        animationType='slide'
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={()=>{Alert.alert('modal est fermé'); setModalVisible(!modalVisible);}}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>HELLO word</Text>
-            <Pressable 
-              style={[styles.button, styles.buttonClose]}
-              onPress={()=> setModalVisible(!modalVisible)}>
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </Pressable>
-          </View>
-        </View>
-
-      </Modal>
+    <View style={styles.container}>
       <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={()=> setModalVisible(true)}>
-          <Text style={styles.textStyle}>show modal</Text>
+        onPress={() => {
+          setTimesPressed((current) => current + 1);
+        }}
+        style={({ pressed }) => [
+          {
+            backgroundColor: pressed
+              ? 'rgb(255, 030, 055)'
+              : '#04F4F8'
+          },
+          styles.wrapperCustom
+        ]}>
+        {({ pressed }) => (
+          <Text style={styles.text}>
+            {pressed ? 'Pressed!' : 'Press Me'}
+          </Text>
+        )}
       </Pressable>
-    </View>
-  );
-};
-
-
-
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center"
-  }
-});
-
-
-
-
-
-
-/*                  
-              FlatList
-
-const DATA= [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Iteme'
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item'
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item'
-  }
-];
-
-
-
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.title, textColor]}>{item.title}</Text>
-  </TouchableOpacity>
-);
-
-const App = () => {
-  const [selectedId, setSelectedId] = useState(null);
-
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-    const color = item.id === selectedId ? 'white' : 'black';
-
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        backgroundColor={{ backgroundColor }}
-        textColor={{ color }}
-      />
-    );
-  };
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        extraData={selectedId}
-      />
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-});
-
-*/
-
-
-
-/* const Item = ({title}) =>(
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
-
-
-const App = ()=>{
-  const renderItem = ({item}) =>(
-    <Item title={item.title}/>
-  );
-
-  return(
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
-    </SafeAreaView>
-  );
-} */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*                  
-              Button
-
-
-const Separator = () =>(
-  <View style={styles.separator}/>
-);
-
-const App = () =>(
-  <SafeAreaView style={styles.container}>
-    <View>
-      <Text style={styles.title}>
-      he title and onPress handler are required. It is recommended to set accessibilityLabel to help make your app usable by everyone.
-      </Text>
-      <Button
-        title="Appuyez"
-        onPress={()=> Alert.alert('C\'est un test sur le boutton')}
-      />
-    </View>
-    <Separator/>
-    <View>
-      <Text style={styles.title}>
-        Adjust the color in a way that looks standard on each platform. On  iOS, the color prop controls the color of the text. On Android, the color adjusts the background color of the button.
-      </Text>
-      <Button
-        title="Appuyez"
-        color='#f194FF'
-        onPress={()=> Alert.alert('Button with adjusted color pressed')}
-      />
-    </View>
-    <Separator/>
-    <View>
-      <Text style={styles.title}>
-      All interaction for the component are disabled.
-      </Text>
-      <Button
-        title='Appuyez'
-        disabled
-        onPress={()=>Alert.alert('Cannot press this one')}
-      />
-    </View>
-    <Separator/>
-    <View>
-      <Text style={styles.title}>
-      This layout strategy lets the title define the width of the button.
-      </Text>
-      <View style={styles.fixToText}>
-        <Button
-          title="left button"
-          onPress={()=>Alert.alert('Left button pressed')}
-        />
-        <Button
-          title="Right Button"
-          onPress={()=>Alert.alert('Right button pressed')}
-        />
+      <View style={styles.logBox}>
+        <Text testID="pressable_press_console">{textLog}</Text>
+        <Image source={require('./assets/telechargement.jpg')}/>
       </View>
     </View>
-  </SafeAreaView>
-);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 16
-  },
-  title:{
-    textAlign: 'center',
-    marginVertical: 8
-  },
-  fixToText:{
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  separator:{
-    marginVertical: 8,
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth
-  }
-});
-*/
-
-/* const App = () =>{
-  return(
-    <View>
-      <Button 
-        onPress={onPreLearnMore}
-        title="Learn More"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
-    </View>
-    );
-}
- const onPreLearnMore = ()=>{
-  return(
-    <Text>Merci d'avoir cliqué</Text>
-  )
- } */
-
-/*                  
-              ActivityIndicator
-
-const App = () =>{
-  return(
-    <View style={[styles.container, styles.horizontal]}>
-      <ActivityIndicator/>
-      <ActivityIndicator size= "large"/>
-      <ActivityIndicator size="small" color="#0000ff" hidesWhenStopped ="false"/>
-      <ActivityIndicator size="large" color="00ff00" animating='true'/>
-    </View> 
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
   },
-  horizontal: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
+  text: {
+    fontSize: 16
+  },
+  wrapperCustom: {
+    borderRadius: 8,
+    padding: 6
+  },
+  logBox: {
+    padding: 20,
+    margin: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#f0f0f0',
+    backgroundColor: '#f9f9f9'
   }
 });
 
-*/
 export default App;
