@@ -1,65 +1,48 @@
-import React, { useState } from "react";
-import { View, Text, Image, ScrollView, TextInput, Button, FlatList, StyleSheet, SectionList, ActivityIndicator, SafeAreaView, Alert, StatusBar, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Modal, Pressable } from 'react-native';
+import React, { useState, useCallback } from "react";
+import { View, Text, Image, ScrollView, TextInput, Button, FlatList, StyleSheet, SectionList, ActivityIndicator, SafeAreaView, Alert, StatusBar, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Modal, Pressable, RefreshControl } from 'react-native';
 import { Box ,Stack, HStack, VStack, Flex, Spacer, Wrap} from 'react-native-flex-layout';
 
 
-const App = () => {
-  const [timesPressed, setTimesPressed] = useState(0);
-
-  let textLog = '';
-  if (timesPressed > 1) {
-    textLog = timesPressed + 'x onPress';
-  } else if (timesPressed > 0) {
-    textLog = 'onPress';
-  }
-
-  return (
-    <View style={styles.container}>
-      <Pressable
-        onPress={() => {
-          setTimesPressed((current) => current + 1);
-        }}
-        style={({ pressed }) => [
-          {
-            backgroundColor: pressed
-              ? 'rgb(255, 030, 055)'
-              : '#04F4F8'
-          },
-          styles.wrapperCustom
-        ]}>
-        {({ pressed }) => (
-          <Text style={styles.text}>
-            {pressed ? 'Pressed!' : 'Press Me'}
-          </Text>
-        )}
-      </Pressable>
-      <View style={styles.logBox}>
-        <Text testID="pressable_press_console">{textLog}</Text>
-        <Image source={require('./assets/telechargement.jpg')}/>
-      </View>
-    </View>
-  );
+const wait = (timeout) =>{
+    return new Promise(resolve => setTimeout(resolve, timeout))
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  text: {
-    fontSize: 16
-  },
-  wrapperCustom: {
-    borderRadius: 8,
-    padding: 6
-  },
-  logBox: {
-    padding: 20,
-    margin: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#f0f0f0',
-    backgroundColor: '#f9f9f9'
-  }
-});
+const App = () =>{
+    const [refreshing, setRefreshing] = useState(false);
 
-export default App;
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false))
+    }, []);
+
+    return(
+        <SafeAreaView style={styles.container}>
+            <ScrollView 
+                contentContainerStyle = {styles.scrollView}
+                refreshControl = {
+                    <RefreshControl
+                        refreshing = {refreshing}
+                        onRefresh = {onRefresh}
+                    />
+                }
+                >
+                <Text>Pull down to see RefreshControl indicatore</Text>
+
+            </ScrollView>
+        </SafeAreaView>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    scrollView: {
+      flex: 1,
+      backgroundColor: 'pink',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
+
+  export default App;
