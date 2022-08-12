@@ -3,36 +3,65 @@ import { View, Text, Image, ScrollView, TextInput, Button, FlatList, StyleSheet,
 import { Box ,Stack, HStack, VStack, Flex, Spacer, Wrap} from 'react-native-flex-layout';
 
 
+const DATA = [
+  {
+    title: "Main dishes",
+    data: ["Pizza", "Burger", "Risotto"]
+  },
+  {
+    title: "Sides",
+    data: ["French Fries", "Onion Rings", "Fried Shrimps"]
+  },
+  {
+    title: "Drinks",
+    data: ["Water", "Coke", "Beer"]
+  },
+  {
+    title: "Desserts",
+    data: ["Cheese Cake", "Ice Cream"]
+  }
+];
+
+const Item = ({title}) => (
+  <View style={styles.item}>
+    <Text style={styles.title}>{title}</Text>
+  </View>
+);
+
 const App = () =>{
-    return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView} >
-                <Text style={styles.text}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-                </Text>
-            </ScrollView>
-        </SafeAreaView>
-    )
+
+  return (
+    <SafeAreaView style={StyleSheet.container}>
+      <SectionList
+        sections={DATA}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({item}) => <Item title ={item} />}
+        renderSectionHeader= {({ section : {title}}) => (
+          <Text style={styles.header}> {title} </Text>
+        )}
+      />
+    </SafeAreaView>
+  )
 }
 
-const styles = StyleSheet.create({
-    container :{
-        flex : 1,
-        paddingTop : StatusBar.currentHeight
-    },
-    scrollView :{
-        backgroundColor: '#0904FA',
-        marginHorizontal : 20
-    },
-    text:{
-        fontSize : 42
-    }
-})
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight,
+    marginHorizontal: 16
+  },
+  item: {
+    backgroundColor: "#f9c26f",
+    padding: 20,
+    marginVertical: 8
+  },
+  header: {
+    fontSize: 32,
+    backgroundColor: "#fff"
+  },
+  title: {
+    fontSize: 24
+  }
+});
   export default App;
