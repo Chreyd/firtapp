@@ -3,46 +3,36 @@ import { View, Text, Image, ScrollView, TextInput, Button, FlatList, StyleSheet,
 import { Box ,Stack, HStack, VStack, Flex, Spacer, Wrap} from 'react-native-flex-layout';
 
 
-const wait = (timeout) =>{
-    return new Promise(resolve => setTimeout(resolve, timeout))
-};
-
 const App = () =>{
-    const [refreshing, setRefreshing] = useState(false);
-
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
-        wait(2000).then(() => setRefreshing(false))
-    }, []);
-
-    return(
+    return (
         <SafeAreaView style={styles.container}>
-            <ScrollView 
-                contentContainerStyle = {styles.scrollView}
-                refreshControl = {
-                    <RefreshControl
-                        refreshing = {refreshing}
-                        onRefresh = {onRefresh}
-                    />
-                }
-                >
-                <Text>Pull down to see RefreshControl indicatore</Text>
-
+            <ScrollView style={styles.scrollView} >
+                <Text style={styles.text}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+                </Text>
             </ScrollView>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
+    container :{
+        flex : 1,
+        paddingTop : StatusBar.currentHeight
     },
-    scrollView: {
-      flex: 1,
-      backgroundColor: 'pink',
-      alignItems: 'center',
-      justifyContent: 'center',
+    scrollView :{
+        backgroundColor: '#0904FA',
+        marginHorizontal : 20
     },
-  });
+    text:{
+        fontSize : 42
+    }
+})
 
   export default App;
